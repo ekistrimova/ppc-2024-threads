@@ -50,7 +50,7 @@ std::vector<point> graham(std::vector<point> points) {
 
   std::vector<point> res{points[R[0]], points[R[1]]};
   for (int i = 2; i < n; i++) {
-    while (rotate(res.end()[-2], res.end()[-1], points[R[i]]) < 0) res.pop_back();
+    while (rotate(res.end()[-2], res.end()[-1], points[R[i]]) <= 0) res.pop_back();
     res.push_back(points[R[i]]);
   }
 
