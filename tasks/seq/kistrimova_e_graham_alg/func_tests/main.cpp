@@ -83,10 +83,10 @@ TEST(kistrimova_e_graham_alg_seq, five_points) {
   }
 }
 
-TEST(kistrimova_e_graham_alg_seq, seven_points) {
+TEST(kistrimova_e_graham_alg_seq, inside_square) {
   // Create data
-  std::vector<point> in{{0, 1}, {4, 2}, {5, 1}, {4, 4}, {1, 5}, {2, 1}, {1, 3}};
-  std::vector<point> res{{0, 1}, {5, 1}, {4, 4}, {1, 5}};
+  std::vector<point> in{{1, 1}, {6, 1}, {1, 6}, {2, 4}, {5, 3}, {6, 6}};
+  std::vector<point> res{{1, 1}, {6, 1}, {6, 6}, {1, 6}};
   std::vector<point> out(res.size());
 
   // Create TaskData
