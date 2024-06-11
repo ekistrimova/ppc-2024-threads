@@ -57,10 +57,10 @@ TEST(kistrimova_e_graham_alg_seq, min_data) {
   }
 }
 
-TEST(kistrimova_e_graham_alg_seq, collinear) {
+TEST(kistrimova_e_graham_alg_seq, five_points) {
   // Create data
-  std::vector<point> in{{0, 0}, {1, 1}, {2, 2}, {3, 3}};
-  std::vector<point> res{{0, 0}, {3, 3}};
+  std::vector<point> in{{0, 4}, {1, 4}, {0, 5}, {3, 3}, {5, 2}};
+  std::vector<point> res{{0, 4}, {5, 2}, {0, 5}};
   std::vector<point> out(res.size());
 
   // Create TaskData
@@ -83,10 +83,10 @@ TEST(kistrimova_e_graham_alg_seq, collinear) {
   }
 }
 
-TEST(kistrimova_e_graham_alg_seq, repeated) {
+TEST(kistrimova_e_graham_alg_seq, seven_points) {
   // Create data
-  std::vector<point> in{{0, 0}, {1, 1}, {2, 2}, {1, 1}, {2, 2}};
-  std::vector<point> res{{0, 0}, {2, 2}};
+  std::vector<point> in{{0, 1}, {4, 2}, {5, 1}, {4, 4}, {1, 5}, {2, 1}, {1, 3}};
+  std::vector<point> res{{0, 1}, {5, 1}, {4, 4}, {1, 5}};
   std::vector<point> out(res.size());
 
   // Create TaskData
@@ -109,7 +109,7 @@ TEST(kistrimova_e_graham_alg_seq, repeated) {
   }
 }
 
-TEST(kistrimova_e_graham_alg_seq, t5) {
+TEST(kistrimova_e_graham_alg_seq, ten_points) {
   // Create data
   std::vector<point> in{{5, 7}, {10, 3}, {7, 5}, {3, 2}, {8, 8}, {7, 4}, {5, 9}, {10, 8}, {0, 3}, {9, 6}};
   std::vector<point> res{{0, 3}, {3, 2}, {10, 3}, {10, 8}, {5, 9}};
