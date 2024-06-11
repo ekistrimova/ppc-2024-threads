@@ -85,8 +85,3 @@ TEST(kistrimova_e_graham_alg_seq_perf_test, test_task_run) {
     ASSERT_EQ(out[i], res[i]);
   }
 }
-
-int main(int argc, char **argv) {
-  testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
-}

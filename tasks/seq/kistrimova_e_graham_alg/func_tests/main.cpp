@@ -134,8 +134,3 @@ TEST(kistrimova_e_graham_alg_seq, t5) {
     ASSERT_EQ(out[i], res[i]);
   }
 }
-
-int main(int argc, char **argv) {
-  testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
-}
