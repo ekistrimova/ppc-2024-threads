@@ -2,16 +2,14 @@
 #pragma once
 
 #include <string>
-#include <vector>
 #include <utility>
+#include <vector>
 
 #include "core/task/include/task.hpp"
 
 struct point {
   double x, y;
-  bool operator==(const point& other) const {
-    return (x == other.x && y == other.y);
-  }
+  bool operator==(const point& other) const { return (x == other.x && y == other.y); }
 };
 
 class GrahamAlgTask : public ppc::core::Task {
@@ -23,8 +21,8 @@ class GrahamAlgTask : public ppc::core::Task {
   bool post_processing() override;
 
  private:
-  std::vector<point> input {};
-  std::vector<point> output {};
+  std::vector<point> input{};
+  std::vector<point> output{};
 };
 
 std::vector<point> graham(std::vector<point> points);

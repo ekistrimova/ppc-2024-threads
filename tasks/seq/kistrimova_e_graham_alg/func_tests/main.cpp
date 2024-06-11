@@ -3,21 +3,13 @@
 
 #include <vector>
 
-#include "seq/example/include/ops_seq.hpp"
+#include "seq/kistrimova_e_graham_alg/include/ops_seq.hpp"
 
 TEST(kistrimova_e_graham_alg_seq, t1) {
   // Create data
-  std::vector<point> in {
-    {-2, -2},
-    {4, 0},
-    {3, 0}
-  };
+  std::vector<point> in{{-2, -2}, {4, 0}, {3, 0}};
   std::vector<point> out(in.size());
-  std::vector<point> res {
-    {-2, -2},
-    {4, 0},
-    {3, 0}
-  };
+  std::vector<point> res{{-2, -2}, {4, 0}, {3, 0}};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -41,17 +33,9 @@ TEST(kistrimova_e_graham_alg_seq, t1) {
 
 TEST(kistrimova_e_graham_alg_seq, t2) {
   // Create data
-  std::vector<point> in {
-    {-2, -2},
-    {4, 0},
-    {3, 0}
-  };
+  std::vector<point> in{{-2, -2}, {4, 0}, {3, 0}};
   std::vector<point> out(in.size());
-  std::vector<point> res {
-    {-2, -2},
-    {4, 0},
-    {3, 0}
-  };
+  std::vector<point> res{{-2, -2}, {4, 0}, {3, 0}};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -75,17 +59,9 @@ TEST(kistrimova_e_graham_alg_seq, t2) {
 
 TEST(kistrimova_e_graham_alg_seq, t3) {
   // Create data
-  std::vector<point> in {
-    {-2, -2},
-    {4, 0},
-    {3, 0}
-  };
+  std::vector<point> in{{-2, -2}, {4, 0}, {3, 0}};
   std::vector<point> out(in.size());
-  std::vector<point> res {
-    {-2, -2},
-    {4, 0},
-    {3, 0}
-  };
+  std::vector<point> res{{-2, -2}, {4, 0}, {3, 0}};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -109,17 +85,9 @@ TEST(kistrimova_e_graham_alg_seq, t3) {
 
 TEST(kistrimova_e_graham_alg_seq, t4) {
   // Create data
-  std::vector<point> in {
-    {-2, -2},
-    {4, 0},
-    {3, 0}
-  };
+  std::vector<point> in{{-2, -2}, {4, 0}, {3, 0}};
   std::vector<point> out(in.size());
-  std::vector<point> res {
-    {-2, -2},
-    {4, 0},
-    {3, 0}
-  };
+  std::vector<point> res{{-2, -2}, {4, 0}, {3, 0}};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -143,17 +111,9 @@ TEST(kistrimova_e_graham_alg_seq, t4) {
 
 TEST(kistrimova_e_graham_alg_seq, t5) {
   // Create data
-  std::vector<point> in {
-    {-2, -2},
-    {4, 0},
-    {3, 0}
-  };
+  std::vector<point> in{{-2, -2}, {4, 0}, {3, 0}};
   std::vector<point> out(in.size());
-  std::vector<point> res {
-    {-2, -2},
-    {4, 0},
-    {3, 0}
-  };
+  std::vector<point> res{{-2, -2}, {4, 0}, {3, 0}};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
