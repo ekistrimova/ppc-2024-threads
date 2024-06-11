@@ -8,8 +8,8 @@
 TEST(kistrimova_e_graham_alg_seq, known_result) {
   // Create data
   std::vector<point> in{{0, 0}, {1, 1}, {2, 2}, {3, 3}, {0, 3}, {3, 0}};
-  std::vector<point> out(in.size());
   std::vector<point> res{{0, 0}, {3, 0}, {3, 3}, {0, 3}};
+  std::vector<point> out(res.size());
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -34,8 +34,8 @@ TEST(kistrimova_e_graham_alg_seq, known_result) {
 TEST(kistrimova_e_graham_alg_seq, min_data) {
   // Create data
   std::vector<point> in{{8, 1}, {8, 5}, {6, 5}};
-  std::vector<point> out(in.size());
   std::vector<point> res{{6, 5}, {8, 1}, {8, 5}};
+  std::vector<point> out(res.size());
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -60,8 +60,8 @@ TEST(kistrimova_e_graham_alg_seq, min_data) {
 TEST(kistrimova_e_graham_alg_seq, collinear) {
   // Create data
   std::vector<point> in{{0, 0}, {1, 1}, {2, 2}, {3, 3}};
-  std::vector<point> out(in.size());
   std::vector<point> res{{0, 0}, {3, 3}};
+  std::vector<point> out(res.size());
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -86,8 +86,8 @@ TEST(kistrimova_e_graham_alg_seq, collinear) {
 TEST(kistrimova_e_graham_alg_seq, repeated) {
   // Create data
   std::vector<point> in{{0, 0}, {1, 1}, {2, 2}, {1, 1}, {2, 2}};
-  std::vector<point> out(in.size());
   std::vector<point> res{{0, 0}, {2, 2}};
+  std::vector<point> out(res.size());
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -112,8 +112,8 @@ TEST(kistrimova_e_graham_alg_seq, repeated) {
 TEST(kistrimova_e_graham_alg_seq, t5) {
   // Create data
   std::vector<point> in{{5, 7}, {10, 3}, {7, 5}, {3, 2}, {8, 8}, {7, 4}, {5, 9}, {10, 8}, {0, 3}, {9, 6}};
-  std::vector<point> out(in.size());
   std::vector<point> res{{0, 3}, {3, 2}, {10, 3}, {10, 8}, {5, 9}};
+  std::vector<point> out(res.size());
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();

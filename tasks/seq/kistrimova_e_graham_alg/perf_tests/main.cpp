@@ -9,8 +9,8 @@
 TEST(kistrimova_e_graham_alg_seq_perf_test, test_pipeline_run) {
   // Create data
   std::vector<point> in{{9, 19}, {15, 20}, {8, 8}, {16, 16}, {6, 6}, {3, 20}, {7, 1}, {20, 15}, {0, 2}, {8, 15}};
-  std::vector<point> out(in.size());
   std::vector<point> res{{0, 2}, {7, 1}, {20, 15}, {15, 20}, {3, 20}};
+  std::vector<point> out(res.size());
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -49,8 +49,8 @@ TEST(kistrimova_e_graham_alg_seq_perf_test, test_pipeline_run) {
 TEST(kistrimova_e_graham_alg_seq_perf_test, test_task_run) {
   // Create data
   std::vector<point> in{{9, 19}, {15, 20}, {8, 8}, {16, 16}, {6, 6}, {3, 20}, {7, 1}, {20, 15}, {0, 2}, {8, 15}};
-  std::vector<point> out(in.size());
   std::vector<point> res{{0, 2}, {7, 1}, {20, 15}, {15, 20}, {3, 20}};
+  std::vector<point> out(res.size());
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
