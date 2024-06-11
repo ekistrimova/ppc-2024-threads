@@ -1,120 +1,64 @@
 // Copyright 2024 Kistrimova Ekaterina
-#include "seq/kistrimova_e_graham_alg/include/kistrimova_e_graham_alg_seq.hpp"
+#include "seq/example/include/ops_seq.hpp"
 
-#include <algorithm>
-#include <limits>
+#include <thread>
 
-double angle(const KistrimovaETaskSeq::Point &origin, const KistrimovaETaskSeq::Point &point) {
-  double dx = point.first - origin.first;
-  double dy = point.second - origin.second;
-  if (dx == 0.0 && dy == 0.0) {
-    // Return this incorrect value to ensure the origin is always first in sorted array
-    return -1.0;
-  }
-  // Calculating angle using algorithm from https://stackoverflow.com/a/14675998/14116050
-  return (dy >= 0) ? (dx >= 0 ? dy / (dx + dy) : 1 - dx / (-dx + dy))
-                   : (dx < 0 ? 2 - dy / (-dx - dy) : 3 + dx / (dx - dy));
-}
-bool compareForSort(const KistrimovaETaskSeq::Point &origin, const KistrimovaETaskSeq::Point &a,
-                    const KistrimovaETaskSeq::Point &b) {
-  double angleA = angle(origin, a);
-  double angleB = angle(origin, b);
-  if (angleA < angleB) {
-    return true;
-  }
-  if (angleA > angleB) {
-    return false;
-  }
-  double dxA = a.first - origin.first;
-  double dyA = a.second - origin.second;
-  double dxB = b.first - origin.first;
-  double dyB = b.second - origin.second;
-  // The further point must be first
-  // so the others will be ignored
-  return dxA * dxA + dyA * dyA > dxB * dxB + dyB * dyB;
-}
-
-bool checkOrientation(const KistrimovaETaskSeq::Point &origin, const KistrimovaETaskSeq::Point &a,
-                      const KistrimovaETaskSeq::Point &b) {
-  double dxA = a.first - origin.first;
-  double dyA = a.second - origin.second;
-  double dxB = b.first - origin.first;
-  double dyB = b.second - origin.second;
-  // Using cross product to check orientation
-  return dxA * dyB - dyA * dxB < 0;
-}
-
-bool KistrimovaETaskSeq::GrahamAlgTask::pre_processing() {
+bool GrahamAlgTask::pre_processing() {
   internal_order_test();
-  auto *pointsX = reinterpret_cast<double *>(taskData->inputs.at(0));
-  auto *pointsY = reinterpret_cast<double *>(taskData->inputs.at(1));
-  points = std::vector<std::pair<double, double>>();
-  points.reserve(taskData->inputs_count[0]);
-  for (size_t i = 0; i < taskData->inputs_count[0]; ++i) {
-    points.emplace_back(pointsX[i], pointsY[i]);
+  input = std::vector<point>(taskData->inputs_count[0]);
+  auto* in = reinterpret_cast<point*>(taskData->inputs[0]);
+  for (unsigned int i = 0; i < taskData->inputs_count[0]; i++) {
+    input[i] = in[i];
   }
-
+  output = input;
   return true;
 }
 
-bool KistrimovaETaskSeq::GrahamAlgTask::validation() {
+bool GrahamAlgTask::validation() {
   internal_order_test();
-  if (taskData->inputs_count.at(0) != taskData->inputs_count.at(1)) {
-    return false;
-  }
-  if (taskData->inputs_count[0] < 3) {
-    return false;
-  }
+  return taskData->outputs_count[0] <= taskData->inputs_count[0];
+}
+
+bool GrahamAlgTask::run() {
+  internal_order_test();
+  output = graham(input);
   return true;
 }
 
-bool KistrimovaETaskSeq::GrahamAlgTask::run() {
+bool GrahamAlgTask::post_processing() {
   internal_order_test();
-  auto originIt =
-      std::min_element(points.begin(), points.end(), [](auto &a, auto &b) -> bool { return a.second < b.second; });
-  auto origin = *originIt;
+  std::copy(output.begin(), output.end(), reinterpret_cast<point*>(taskData->outputs[0]));
+  return true;
+}
 
-  for (size_t phase = 0; phase < points.size(); phase++) {
-    if ((phase & 1) == 0) {
-      for (size_t i = 1; i < points.size(); i += 2) {
-        if (compareForSort(origin, points[i], points[i - 1])) {
-          std::iter_swap(points.begin() + i, points.begin() + i - 1);
-        }
-      }
-    } else {
-      for (size_t i = 1; i < points.size() - 1; i += 2) {
-        if (compareForSort(origin, points[i + 1], points[i])) {
-          std::iter_swap(points.begin() + i, points.begin() + i + 1);
-        }
-      }
+double rotate(point X, point Y, point Z) {
+  return (Y.x-X.x)*(Z.y-Y.y)-(Y.y-X.y)*(Z.x-Y.x);
+}
+
+std::vector<point> graham(std::vector<point> points) {
+  int n = points.size();
+  std::vector<int> R(n);
+  for (int i = 0; i < n; i++) R[i] = i;
+
+  for (int i = 1; i < n; i++) {
+    if (points[R[i]].x < points[R[0]].x)
+      std::swap(R[i], R[0]);
+  }
+
+  for (int i = 2; i < n; i++) {
+    int j = i;
+    while (j > 1 && rotate(points[R[0]], points[R[j-1]], points[R[j]]) < 0) {
+      std::swap(R[j], R[j-1]);
+      j--;
     }
   }
 
-  std::vector<Point> hull;
-  hull.reserve(points.size());
-  hull.push_back(points[0]);
-  hull.push_back(points[1]);
-  hull.push_back(points[2]);
-
-  for (uint32_t i = 3; i < points.size(); ++i) {
-    while (hull.size() > 1 && !checkOrientation(hull.back(), *(hull.end() - 2), points[i])) {
-      hull.pop_back();
-    }
-    hull.push_back(points[i]);
+  std::vector<point> res {points[R[0]], points[R[1]]};
+  for (int i = 2; i < n; i++) {
+    while (rotate(res.end()[-2], res.end()[-1], points[R[i]]) < 0)
+      res.pop_back();
+    res.push_back(points[R[i]]);
   }
-  this->finalHull = hull;
-  return true;
-}
 
-bool KistrimovaETaskSeq::GrahamAlgTask::post_processing() {
-  internal_order_test();
-  auto *resultsX = reinterpret_cast<double *>(taskData->outputs[0]);
-  auto *resultsY = reinterpret_cast<double *>(taskData->outputs[1]);
-  for (size_t i = 0; i < finalHull.size(); ++i) {
-    resultsX[i] = finalHull[i].first;
-    resultsY[i] = finalHull[i].second;
-  }
-  taskData->outputs_count[0] = finalHull.size();
-  taskData->outputs_count[1] = finalHull.size();
-  return true;
+  return res;
 }

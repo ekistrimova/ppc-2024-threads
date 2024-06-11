@@ -1,277 +1,181 @@
 // Copyright 2024 Kistrimova Ekaterina
 #include <gtest/gtest.h>
 
-#include "seq/kistrimova_e_graham_alg/include/kistrimova_e_graham_alg_seq.hpp"
+#include <vector>
 
-TEST(kistrimova_e_graham_alg_seq, ThreePoints) {
-  std::vector<double> pX;
-  pX.emplace_back(-2.0);
-  pX.emplace_back(4.0);
-  pX.emplace_back(1.0);
-  std::vector<double> pY;
-  pY.emplace_back(-2.0);
-  pY.emplace_back(0.0);
-  pY.emplace_back(3.0);
+#include "seq/example/include/ops_seq.hpp"
 
-  std::vector<double> outX(pX.size());
-  std::vector<double> outY(pY.size());
+TEST(kistrimova_e_graham_alg_seq, t1) {
+  // Create data
+  std::vector<point> in {
+    {-2, -2},
+    {4, 0},
+    {3, 0}
+  };
+  std::vector<point> out(in.size());
+  std::vector<point> res {
+    {-2, -2},
+    {4, 0},
+    {3, 0}
+  };
 
-  std::shared_ptr<ppc::core::TaskData> data = std::make_shared<ppc::core::TaskData>();
-  data->inputs.emplace_back(reinterpret_cast<uint8_t *>(pX.data()));
-  data->inputs_count.emplace_back(pX.size());
-  data->inputs.emplace_back(reinterpret_cast<uint8_t *>(pY.data()));
-  data->inputs_count.emplace_back(pY.size());
+  // Create TaskData
+  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+  taskDataSeq->inputs_count.emplace_back(in.size());
+  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  taskDataSeq->outputs_count.emplace_back(out.size());
 
-  data->outputs.emplace_back(reinterpret_cast<uint8_t *>(outX.data()));
-  data->outputs_count.emplace_back(outX.size());
-  data->outputs.emplace_back(reinterpret_cast<uint8_t *>(outY.data()));
-  data->outputs_count.emplace_back(outY.size());
+  // Create Task
+  GrahamAlgTask testTaskSequential(taskDataSeq);
+  ASSERT_EQ(testTaskSequential.validation(), true);
+  testTaskSequential.pre_processing();
+  testTaskSequential.run();
+  testTaskSequential.post_processing();
 
-  KistrimovaETaskSeq::GrahamAlgTask task(data);
-
-  ASSERT_TRUE(task.validation());
-  ASSERT_TRUE(task.pre_processing());
-  ASSERT_TRUE(task.run());
-  ASSERT_TRUE(task.post_processing());
-
-  EXPECT_EQ(pX.size(), data->outputs_count[0]);
-  EXPECT_EQ(pY.size(), data->outputs_count[1]);
-
-  for (size_t i = 0; i < data->outputs_count[0]; ++i) {
-    EXPECT_EQ(pX[i], outX[i]);
-    EXPECT_EQ(pY[i], outY[i]);
+  ASSERT_EQ(out.size(), res.size());
+  for (size_t i = 0; i < res.size(); i++) {
+    ASSERT_EQ(out[i], res[i]);
   }
 }
 
-TEST(kistrimova_e_graham_alg_seq, Square) {
-  std::vector<double> pX;
-  pX.emplace_back(2.0);
-  pX.emplace_back(5.0);
-  pX.emplace_back(5.0);
-  pX.emplace_back(2.0);
-  std::vector<double> pY;
-  pY.emplace_back(5.0);
-  pY.emplace_back(2.0);
-  pY.emplace_back(5.0);
-  pY.emplace_back(2.0);
-
-  std::vector<double> outX(pX.size());
-  std::vector<double> outY(pY.size());
-
-  std::shared_ptr<ppc::core::TaskData> data = std::make_shared<ppc::core::TaskData>();
-  data->inputs.emplace_back(reinterpret_cast<uint8_t *>(pX.data()));
-  data->inputs_count.emplace_back(pX.size());
-  data->inputs.emplace_back(reinterpret_cast<uint8_t *>(pY.data()));
-  data->inputs_count.emplace_back(pY.size());
-
-  data->outputs.emplace_back(reinterpret_cast<uint8_t *>(outX.data()));
-  data->outputs_count.emplace_back(outX.size());
-  data->outputs.emplace_back(reinterpret_cast<uint8_t *>(outY.data()));
-  data->outputs_count.emplace_back(outY.size());
-
-  std::vector<KistrimovaETaskSeq::Point> expectedPoints = {
-      {pX[1], pY[1]},
-      {pX[2], pY[2]},
-      {pX[0], pY[0]},
-      {pX[3], pY[3]},
+TEST(kistrimova_e_graham_alg_seq, t2) {
+  // Create data
+  std::vector<point> in {
+    {-2, -2},
+    {4, 0},
+    {3, 0}
+  };
+  std::vector<point> out(in.size());
+  std::vector<point> res {
+    {-2, -2},
+    {4, 0},
+    {3, 0}
   };
 
-  KistrimovaETaskSeq::GrahamAlgTask task(data);
+  // Create TaskData
+  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+  taskDataSeq->inputs_count.emplace_back(in.size());
+  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  taskDataSeq->outputs_count.emplace_back(out.size());
 
-  ASSERT_TRUE(task.validation());
-  ASSERT_TRUE(task.pre_processing());
-  ASSERT_TRUE(task.run());
-  ASSERT_TRUE(task.post_processing());
+  // Create Task
+  GrahamAlgTask testTaskSequential(taskDataSeq);
+  ASSERT_EQ(testTaskSequential.validation(), true);
+  testTaskSequential.pre_processing();
+  testTaskSequential.run();
+  testTaskSequential.post_processing();
 
-  EXPECT_EQ(expectedPoints.size(), data->outputs_count[0]);
-  EXPECT_EQ(expectedPoints.size(), data->outputs_count[1]);
-
-  for (size_t i = 0; i < data->outputs_count[0]; ++i) {
-    EXPECT_EQ(expectedPoints[i].first, outX[i]);
-    EXPECT_EQ(expectedPoints[i].second, outY[i]);
+  ASSERT_EQ(out.size(), res.size());
+  for (size_t i = 0; i < res.size(); i++) {
+    ASSERT_EQ(out[i], res[i]);
   }
 }
 
-TEST(kistrimova_e_graham_alg_seq, SquareWithPointInTheMiddle) {
-  std::vector<double> pX;
-  pX.emplace_back(2.0);
-  pX.emplace_back(5.0);
-  pX.emplace_back(5.0);
-  pX.emplace_back(3.5);
-  pX.emplace_back(2.0);
-  std::vector<double> pY;
-  pY.emplace_back(5.0);
-  pY.emplace_back(2.0);
-  pY.emplace_back(5.0);
-  pY.emplace_back(4.0);
-  pY.emplace_back(2.0);
-
-  std::vector<double> outX(pX.size());
-  std::vector<double> outY(pY.size());
-
-  std::shared_ptr<ppc::core::TaskData> data = std::make_shared<ppc::core::TaskData>();
-  data->inputs.emplace_back(reinterpret_cast<uint8_t *>(pX.data()));
-  data->inputs_count.emplace_back(pX.size());
-  data->inputs.emplace_back(reinterpret_cast<uint8_t *>(pY.data()));
-  data->inputs_count.emplace_back(pY.size());
-
-  data->outputs.emplace_back(reinterpret_cast<uint8_t *>(outX.data()));
-  data->outputs_count.emplace_back(outX.size());
-  data->outputs.emplace_back(reinterpret_cast<uint8_t *>(outY.data()));
-  data->outputs_count.emplace_back(outY.size());
-
-  std::vector<KistrimovaETaskSeq::Point> expectedPoints = {
-      {pX[1], pY[1]},
-      {pX[2], pY[2]},
-      {pX[0], pY[0]},
-      {pX[4], pY[4]},
+TEST(kistrimova_e_graham_alg_seq, t3) {
+  // Create data
+  std::vector<point> in {
+    {-2, -2},
+    {4, 0},
+    {3, 0}
+  };
+  std::vector<point> out(in.size());
+  std::vector<point> res {
+    {-2, -2},
+    {4, 0},
+    {3, 0}
   };
 
-  KistrimovaETaskSeq::GrahamAlgTask task(data);
+  // Create TaskData
+  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+  taskDataSeq->inputs_count.emplace_back(in.size());
+  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  taskDataSeq->outputs_count.emplace_back(out.size());
 
-  ASSERT_TRUE(task.validation());
-  ASSERT_TRUE(task.pre_processing());
-  ASSERT_TRUE(task.run());
-  ASSERT_TRUE(task.post_processing());
+  // Create Task
+  GrahamAlgTask testTaskSequential(taskDataSeq);
+  ASSERT_EQ(testTaskSequential.validation(), true);
+  testTaskSequential.pre_processing();
+  testTaskSequential.run();
+  testTaskSequential.post_processing();
 
-  EXPECT_EQ(expectedPoints.size(), data->outputs_count[0]);
-  EXPECT_EQ(expectedPoints.size(), data->outputs_count[1]);
-
-  for (size_t i = 0; i < data->outputs_count[0]; ++i) {
-    EXPECT_EQ(expectedPoints[i].first, outX[i]);
-    EXPECT_EQ(expectedPoints[i].second, outY[i]);
+  ASSERT_EQ(out.size(), res.size());
+  for (size_t i = 0; i < res.size(); i++) {
+    ASSERT_EQ(out[i], res[i]);
   }
 }
 
-TEST(kistrimova_e_graham_alg_seq, SquareWithPointOnEdge) {
-  std::vector<double> pX;
-  pX.emplace_back(2.0);
-  pX.emplace_back(5.0);
-  pX.emplace_back(5.0);
-  pX.emplace_back(2.0);
-  pX.emplace_back(2.0);
-  std::vector<double> pY;
-  pY.emplace_back(5.0);
-  pY.emplace_back(2.0);
-  pY.emplace_back(5.0);
-  pY.emplace_back(4.0);
-  pY.emplace_back(2.0);
-
-  std::vector<double> outX(pX.size());
-  std::vector<double> outY(pY.size());
-
-  std::shared_ptr<ppc::core::TaskData> data = std::make_shared<ppc::core::TaskData>();
-  data->inputs.emplace_back(reinterpret_cast<uint8_t *>(pX.data()));
-  data->inputs_count.emplace_back(pX.size());
-  data->inputs.emplace_back(reinterpret_cast<uint8_t *>(pY.data()));
-  data->inputs_count.emplace_back(pY.size());
-
-  data->outputs.emplace_back(reinterpret_cast<uint8_t *>(outX.data()));
-  data->outputs_count.emplace_back(outX.size());
-  data->outputs.emplace_back(reinterpret_cast<uint8_t *>(outY.data()));
-  data->outputs_count.emplace_back(outY.size());
-
-  std::vector<KistrimovaETaskSeq::Point> expectedPoints = {
-      {pX[1], pY[1]},
-      {pX[2], pY[2]},
-      {pX[0], pY[0]},
-      {pX[4], pY[4]},
+TEST(kistrimova_e_graham_alg_seq, t4) {
+  // Create data
+  std::vector<point> in {
+    {-2, -2},
+    {4, 0},
+    {3, 0}
+  };
+  std::vector<point> out(in.size());
+  std::vector<point> res {
+    {-2, -2},
+    {4, 0},
+    {3, 0}
   };
 
-  KistrimovaETaskSeq::GrahamAlgTask task(data);
+  // Create TaskData
+  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+  taskDataSeq->inputs_count.emplace_back(in.size());
+  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  taskDataSeq->outputs_count.emplace_back(out.size());
 
-  ASSERT_TRUE(task.validation());
-  ASSERT_TRUE(task.pre_processing());
-  ASSERT_TRUE(task.run());
-  ASSERT_TRUE(task.post_processing());
+  // Create Task
+  GrahamAlgTask testTaskSequential(taskDataSeq);
+  ASSERT_EQ(testTaskSequential.validation(), true);
+  testTaskSequential.pre_processing();
+  testTaskSequential.run();
+  testTaskSequential.post_processing();
 
-  EXPECT_EQ(expectedPoints.size(), data->outputs_count[0]);
-  EXPECT_EQ(expectedPoints.size(), data->outputs_count[1]);
-
-  for (size_t i = 0; i < data->outputs_count[0]; ++i) {
-    EXPECT_EQ(expectedPoints[i].first, outX[i]);
-    EXPECT_EQ(expectedPoints[i].second, outY[i]);
+  ASSERT_EQ(out.size(), res.size());
+  for (size_t i = 0; i < res.size(); i++) {
+    ASSERT_EQ(out[i], res[i]);
   }
 }
 
-TEST(kistrimova_e_graham_alg_seq, PentagonWithPointsInside) {
-  std::vector<double> pX;
-  pX.emplace_back(1.5);
-
-  pX.emplace_back(2.0);
-
-  pX.emplace_back(2.2);
-  pX.emplace_back(4.1);
-  pX.emplace_back(2.0);
-
-  pX.emplace_back(5.0);
-
-  pX.emplace_back(3.7);
-  pX.emplace_back(4.3);
-
-  pX.emplace_back(5.0);
-
-  pX.emplace_back(5.0);
-  pX.emplace_back(3.5);
-  pX.emplace_back(2.7);
-  pX.emplace_back(3.0);
-
-  pX.emplace_back(1.0);
-  pX.emplace_back(2.0);
-  std::vector<double> pY;
-  pY.emplace_back(3.5);
-
-  pY.emplace_back(5.0);
-
-  pY.emplace_back(3.2);
-  pY.emplace_back(4.2);
-  pY.emplace_back(2.4);
-
-  pY.emplace_back(2.0);
-
-  pY.emplace_back(3.2);
-  pY.emplace_back(5.0);
-
-  pY.emplace_back(5.0);
-
-  pY.emplace_back(2.9);
-  pY.emplace_back(4.8);
-  pY.emplace_back(2.5);
-  pY.emplace_back(4.6);
-
-  pY.emplace_back(4.0);
-  pY.emplace_back(2.0);
-
-  std::vector<double> outX(pX.size());
-  std::vector<double> outY(pY.size());
-
-  std::shared_ptr<ppc::core::TaskData> data = std::make_shared<ppc::core::TaskData>();
-  data->inputs.emplace_back(reinterpret_cast<uint8_t *>(pX.data()));
-  data->inputs_count.emplace_back(pX.size());
-  data->inputs.emplace_back(reinterpret_cast<uint8_t *>(pY.data()));
-  data->inputs_count.emplace_back(pY.size());
-
-  data->outputs.emplace_back(reinterpret_cast<uint8_t *>(outX.data()));
-  data->outputs_count.emplace_back(outX.size());
-  data->outputs.emplace_back(reinterpret_cast<uint8_t *>(outY.data()));
-  data->outputs_count.emplace_back(outY.size());
-
-  std::vector<KistrimovaETaskSeq::Point> expectedPoints = {
-      {pX[5], pY[5]}, {pX[8], pY[8]}, {pX[1], pY[1]}, {pX[13], pY[13]}, {pX[14], pY[14]},
+TEST(kistrimova_e_graham_alg_seq, t5) {
+  // Create data
+  std::vector<point> in {
+    {-2, -2},
+    {4, 0},
+    {3, 0}
+  };
+  std::vector<point> out(in.size());
+  std::vector<point> res {
+    {-2, -2},
+    {4, 0},
+    {3, 0}
   };
 
-  KistrimovaETaskSeq::GrahamAlgTask task(data);
+  // Create TaskData
+  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+  taskDataSeq->inputs_count.emplace_back(in.size());
+  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  taskDataSeq->outputs_count.emplace_back(out.size());
 
-  ASSERT_TRUE(task.validation());
-  ASSERT_TRUE(task.pre_processing());
-  ASSERT_TRUE(task.run());
-  ASSERT_TRUE(task.post_processing());
+  // Create Task
+  GrahamAlgTask testTaskSequential(taskDataSeq);
+  ASSERT_EQ(testTaskSequential.validation(), true);
+  testTaskSequential.pre_processing();
+  testTaskSequential.run();
+  testTaskSequential.post_processing();
 
-  EXPECT_EQ(expectedPoints.size(), data->outputs_count[0]);
-  EXPECT_EQ(expectedPoints.size(), data->outputs_count[1]);
-
-  for (size_t i = 0; i < data->outputs_count[0]; ++i) {
-    EXPECT_EQ(expectedPoints[i].first, outX[i]);
-    EXPECT_EQ(expectedPoints[i].second, outY[i]);
+  ASSERT_EQ(out.size(), res.size());
+  for (size_t i = 0; i < res.size(); i++) {
+    ASSERT_EQ(out[i], res[i]);
   }
+}
+
+int main(int argc, char **argv) {
+  testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
 }
